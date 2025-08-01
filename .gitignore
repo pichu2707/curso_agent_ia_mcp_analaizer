@@ -3,3 +3,7 @@
 
 # Entorno virtual
 curso-mcp/
+
+#Carpetas de caché
+__pycache__/
+
