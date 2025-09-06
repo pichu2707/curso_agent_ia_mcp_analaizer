@@ -2,4 +2,15 @@
 .env
 
 # Entorno virtual
+.venv/
+
+# Variables de entorno
+.env
+/.env
+.env
+# Directorios de configuración y archivos específicos del proyecto
 curso-mcp/
+
+# Directorios de caché y archivos temporales
+__pypackages__/
+__pycache__/
