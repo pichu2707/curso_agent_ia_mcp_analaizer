@@ -2,6 +2,7 @@
 .env
 
 # Entorno virtual
+<<<<<<< HEAD
 .venv/
 
 # Variables de entorno
@@ -14,3 +15,10 @@ curso-mcp/
 # Directorios de caché y archivos temporales
 __pypackages__/
 __pycache__/
+=======
+curso-mcp/
+
+#Carpetas de caché
+__pycache__/
+
+>>>>>>> c33841f742e0123605bcba5f97b7d0199a1bc822
