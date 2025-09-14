@@ -1,17 +1,43 @@
 research_task:
   description: >
-    Conduct a thorough research about {topic}
-    Make sure you find any interesting and relevant information given
-    the current year is {current_year}.
-  expected_output: >
-    A list with 10 bullet points of the most relevant information about {topic}
-  agent: researcher
+    Conduct a detailed investigation to identify the best online platforms for placing sports bets with cryptocurrencies, specifically focusing on the sport {sport}. You must collect and organize all relevant information needed to write an article that mirrors the structure and tone of the reference document "gambling-football.md".
 
-reporting_task:
-  description: >
-    Review the context you got and expand each topic into a full section for a report.
-    Make sure the report is detailed and contains any and all relevant information.
+    Your research must include:
+    1. A ranked or curated list of top crypto betting platforms for {sport}
+    2. Licensing and trustworthiness of each platform
+    3. Accepted cryptocurrencies (Bitcoin and altcoins), payment methods, fees, and withdrawal times
+    4. Available betting markets and bet types specific to {sport}
+    5. Bonuses, VIP programs, and promotions related to {sport}
+    6. UX elements like live betting, mobile optimization, and usability during sport events
+    7. Security, compliance, and reputation based on user reviews or audits
+    8. Any recent changes or news tied to {sport} betting on these platforms
+
+    Use reliable sources including official websites, community reviews, expert analysis, and regulatory info. The findings will be used to generate content for bitcoin.com.
   expected_output: >
-    A fully fledged report with the main topics, each with a full section of information.
-    Formatted as markdown without '```'
-  agent: reporting_analyst
+    A structured array or list of betting platforms with full metadata covering all required aspects for the sport {sport}. This data will be used by a content writer to generate a long-form markdown article in the style of “gambling-football.md”.
+  agent: researcher
+  output_file: output/research_{sport}.json
+
+writer_task:
+  description: >
+    Using the structured research data provided, write a complete, high-quality, long-form markdown article for bitcoin.com. The content must **exactly** replicate the structure, formatting, tone, and image placement found in the reference article “gambling-football.md”.
+
+    Your article should be:
+    - Focused on crypto betting for the sport {sport}
+    - Written in fluent, professional English
+    - Approximately 8500 words in length
+    - Fully formatted in markdown
+    - Using the same section headers as the original (e.g. “How We Rank…”, “Pros & Cons…”, etc.)
+    - Including images where appropriate using markdown image syntax
+    - Informative and based strictly on the researcher’s findings — no personal opinion or fabricated data
+
+    ⚠️ Do **not** invent new sections, change the document structure, or omit visuals. Your task is to produce a carbon copy of the original document’s layout, populated with updated and sport-specific data.
+  expected_output: >
+    A long-form markdown document (8500 words) following the exact structure, formatting, and content style of “gambling-football.md”. The article must be ready to publish on bitcoin.com and fully adapted to the sport {sport}.
+  agent: writer
+  context:
+    - research_task
+  output_file: output/{sport}_betting_article.md
+
+
+

@@ -4,6 +4,8 @@ from crewai_tools import SerperDevTool # Hace búsquedas en Google
 from pydantic import BaseModel, Field
 from typing import List
 
+from .tools.push_tool import PushNotificationTool
+
 class TrendingCompany(BaseModel):
     """
     Modelo que representa una empresa en tendencia.
@@ -58,14 +60,14 @@ class StockPicker():
                     )
     
     @agent
-    def financial_research(self) -> Agent:
+    def financial_researcher(self) -> Agent:
         """
         Agente que realiza la investigación financiera de una empresa en tendencia.
 
         Returns:
             Agent: Agente que realiza la investigación financiera de una empresa en tendencia.
         """
-        return Agent(config=self.agents_config['financial_research'], 
+        return Agent(config=self.agents_config['financial_researcher'], 
                     tools=[SerperDevTool()]
                     )
     
@@ -77,7 +79,9 @@ class StockPicker():
         Returns:
             Agent: Agente que selecciona acciones en función de la investigación de empresas en tendencia.
         """
-        return Agent(config=self.agents_config['stock_picker'])
+        return Agent(config=self.agents_config['stock_picker'],
+                    tools=[PushNotificationTool()]
+                    )
     
     @task
     def find_trending_companies(self) -> Task:
@@ -92,14 +96,14 @@ class StockPicker():
                     )
     
     @task
-    def research_trending_company(self) -> Task:
+    def research_trending_companies(self) -> Task:
         """
         Tarea que realiza la investigación financiera de una empresa en tendencia.
 
         Returns:
             Task: Tarea que realiza la investigación financiera de una empresa en tendencia.
         """
-        return Task(config=self.tasks_config['research_trending_company'], 
+        return Task(config=self.tasks_config['research_trending_companies'], 
                     output_pydantic=TrendingCompanyReserach,
                     )
     

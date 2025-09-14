@@ -3,8 +3,7 @@ from datetime import datetime
 import warnings
 import sys
 
-from financial_researche.src.financial_researche.crew import StockPicker
-from stock_pricer.crew import StockPricer
+from stock_pricer.crew import StockPicker
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 
