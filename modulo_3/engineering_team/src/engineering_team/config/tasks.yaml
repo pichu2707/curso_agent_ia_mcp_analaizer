@@ -1,0 +1,50 @@
+design_task:
+  description: >
+    Toma los requisitos de alto nivel descritos aquí y prepara un diseño detallado para el ingeniero;
+    todo debe estar en un solo módulo de Python, pero describe las clases y métodos en el módulo.
+    Aquí están los requisitos: {requirements}
+    IMPORTANTE: Solo entrega el diseño en formato markdown, detallando las clases, las clases y funciones del módulo y describiendo funcionalidades.
+  expected_output: >
+    Un diseño detallado para el ingeniero, identificando las clases y funciones en el módulo
+  agent: engineering_lead
+  output_file: output/design.txt
+
+code_task:
+  description: >
+    Escribe un módulo en Python que implemente el diseño descrito por el líder de ingeniería, para clumplir con los requisitos.
+    Aquí estáan los requisitos: {requirements}
+  expected_output: >
+    Un módulo de Python que implemente el diseño y cumpla con los requisitos.
+    IMPORTANTE: Entrega UNICAMENTE el código de Python sin ningún formato markdown, delimitadores de bloque de código ni comillas invertidas.
+    La salida debe ser código Python válido que pueda guardarse directamente en un archivo .py y ejecutarse.
+  agent: backend_engineer
+  context:
+    - design_task
+  output_file: output/{module_name}.py
+
+frontend_task:
+  description: >
+    Escribe una interfaz de usuario con gradio en un módulo llamado app.py que demuestre la clase backend proporcionada en {module_name}.
+    Supón que solo hay 1 usuario y mantén la interfaz lo más simple posible: solo un prototipo o demostración.
+    Aquí están los requisitos: {requirements}
+  expected_output: >
+    Una interfaz de suaurio con gradio en el módulo app.py que demuestre la clase backend proporcionada en {module_name}.
+    El archivo debe estar listo para ejecutarse tal cual, en el mismo directorio que el módulo backend, e immportar la clase backend desde {module_name}.
+    IMPORTANTE: Entrega UNICAMENTE el código de Python sin ningún formato markdown, delimitadores de bloque de código ni comillas invertidas.
+    La salida deber código Python válido que pueda guardarse directamente en un archivo app.py y ejecutarse.
+  agent: frontend_engineer
+  context:
+    - code_task
+  output_file: output/app.py
+
+test_task:
+  description: >
+    Escribe pruebas unitarias para el módulo backend proporcionado {module_name} y crea un archivo test_{module_name}.py que contiene las pruebas en el mismo directorio que el módulo backend.
+  expected_output: >
+    Un módulo test_{module_name} que prueba el módulo backend dado.
+    IMPORTANTE: Entrega ÚNICAMENTE el código Python sin ningún formato markdown, delimitadores de bloque de código ni comillas invertidas.
+    La salida debe ser código Python válido que pueda guardarse directamente en un archivo test_{module_name}.py y ejecutarse.
+  agent: test_engineer
+  context:
+    - code_task
+  output_file: output/test_{module_name}
