@@ -4,6 +4,9 @@ from crewai_tools import SerperDevTool # Hace búsquedas en Google
 from pydantic import BaseModel, Field
 from typing import List
 
+from crewai.memory import LongTermMemory, ShortTermMemory, EntityMemory
+from crewai.memory.storage.rag_storage import RAGStorage
+
 from .tools.push_tool import PushNotificationTool
 
 class TrendingCompany(BaseModel):
@@ -56,7 +59,8 @@ class StockPicker():
             Agent: Agente que encuentra empresas en tendencia.
         """
         return Agent(config=self.agents_config['trending_company_finder'], 
-                    tools=[SerperDevTool()]
+                    tools=[SerperDevTool()],
+                    memory=True
                     )
     
     @agent
@@ -80,7 +84,8 @@ class StockPicker():
             Agent: Agente que selecciona acciones en función de la investigación de empresas en tendencia.
         """
         return Agent(config=self.agents_config['stock_picker'],
-                    tools=[PushNotificationTool()]
+                    tools=[PushNotificationTool()],
+                        memory=True
                     )
     
     @task
@@ -129,11 +134,32 @@ class StockPicker():
             allow_delegation=True,
 
         )
+        #Introducimos las memory para el crew
+        long_term_memory = LongTermMemory(
+            path="./memory/stock_pricer_ltm.db"
+        )
 
+        # Short term memory para contexto inmediato
+        short_term_memory = ShortTermMemory(
+            path="./memory/"
+        )
+        # Entity memory para almacenar información sobre entidades específicas
+        entity_memory = EntityMemory(
+            path="./memory/"
+        )
         return Crew(
             agents = self.agents,
             tasks = self.tasks,
             process=Process.hierarchical,
             verbose=True,
-            manager_agent=manager
+            manager_agent=manager,
+            memory=True,
+
+            # Long term memory para conocimiento a largo plazo
+            long_term_memory=long_term_memory,
+            # Short term memory para contexto inmediato
+            short_term_memory=short_term_memory,
+            # Entity memory para almacenar información sobre entidades específicas
+            entity_memory=entity_memory
         )
+    
